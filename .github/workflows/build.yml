@@ -3,23 +3,34 @@ on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
+
 jobs:
   build:
     name: Compilar APK debug
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Configurar JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Configurar Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '8.7'
+
+      - name: Instalar Gradle 8.7 manualmente
+        run: |
+          wget -q https://services.gradle.org/distributions/gradle-8.7-bin.zip -O /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /opt
+          echo "/opt/gradle-8.7/bin" >> $GITHUB_PATH
+
+      - name: Verificar entorno
+        run: |
+          gradle --version
+          echo "ANDROID_HOME=$ANDROID_HOME"
+
       - name: Compilar APK debug
         run: gradle assembleDebug --no-daemon --stacktrace
+
       - name: Subir APK como artifact
         uses: actions/upload-artifact@v4
         with:
