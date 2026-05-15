@@ -1,11 +1,19 @@
+# Android Studio / Gradle
 *.iml
 .gradle/
 /local.properties
 .idea/
 .DS_Store
 /build/
+/captures/
+.externalNativeBuild/
+.cxx/
 /app/build/
+/app/release/
 *.apk
 *.aab
+
+# Firmas (NUNCA subir a un repo público)
 *.keystore
 *.jks
+keystore.properties
